@@ -22,7 +22,7 @@
   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-//test by Mohamed Yasser
+//test by Mohamed
 
 #include "secrets.h"
 #include <WiFiClientSecure.h>
