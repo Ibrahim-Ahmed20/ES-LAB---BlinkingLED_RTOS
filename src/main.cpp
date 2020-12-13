@@ -1,7 +1,3 @@
-
-
-
-/////////////////////////////TEST
 #include <Arduino.h>
 #include <sensorDriver.h>
 #include <motorDriver.h>
