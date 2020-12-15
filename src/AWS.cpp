@@ -32,7 +32,7 @@
 #include "AWS.h"
 
 /* The MQTT topics that this device should publish/subscribe to */
-#define AWS_IOT_PUBLISH_TOPIC   "esp32/pub" 
+//#define AWS_IOT_PUBLISH_TOPIC   "esp32/pub" 
 #define AWS_IOT_SUBSCRIBE_TOPIC_T "esp32/target"
 #define AWS_IOT_SUBSCRIBE_TOPIC_R "esp32/rover"
 
@@ -47,9 +47,9 @@ myawsclass::myawsclass() {
 void messageHandler(String &topic, String &payload) {
   Serial.println("incoming: " + topic + " - " + payload);
 
-  StaticJsonDocument<200> doc;
-  deserializeJson(doc, payload);
-  const char* message = doc["message"];
+  //StaticJsonDocument<200> doc;
+  //deserializeJson(doc, payload);
+  //const char* message = doc["message"];
 }
 
 void myawsclass::stayConnected() {
@@ -105,16 +105,16 @@ void myawsclass::connectAWS() {
   Serial.println("AWS IoT Connected!");
 }
 
-void myawsclass::publishMessage(int16_t sensorValue) {
+/*void myawsclass::publishMessage(int16_t sensorValue) {
 
   StaticJsonDocument<200> doc;
   //doc["time"] = millis();
   doc["sensor"] = sensorValue;
   char jsonBuffer[512];
-  serializeJson(doc, jsonBuffer); /* print to client */
+  serializeJson(doc, jsonBuffer); /* print to client 
 
   client.publish(AWS_IOT_PUBLISH_TOPIC, jsonBuffer);
-}
+}*/
 
 myawsclass awsobject = myawsclass();  /* creating an object of class aws */
 

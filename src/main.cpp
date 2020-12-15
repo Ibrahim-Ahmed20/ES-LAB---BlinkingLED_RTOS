@@ -13,6 +13,7 @@ void setup(){
 
   //pinMode(LED_BOARD, OUTPUT);
   Serial.begin(9600);
+  awsobject.connectAWS();
   delay(1000);
   /*xTaskCreate(
                     taskOne,          
@@ -29,10 +30,8 @@ void setup(){
 void loop()
 {
   
-  awsobject.connectAWS();
-
   while(1){
-    awsobject.stayConnected();
+  
     vTaskDelay(200);
   }
 
