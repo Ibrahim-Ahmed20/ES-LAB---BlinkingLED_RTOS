@@ -1,8 +1,9 @@
 #include <Arduino.h>
 #include <sensorDriver.h>
 #include <motorDriver.h>
+#include <AWS.h>
 
-void taskOne( void * parameter); // Sensor Thread
+//void taskOne( void * parameter); // Sensor Thread
 #define LED_BOARD 2 //change here the pin of the board to V2
 
 
@@ -10,16 +11,16 @@ int16_t* a; // The sensor readings are recieved in this array
 
 void setup(){
 
-  pinMode(LED_BOARD, OUTPUT);
+  //pinMode(LED_BOARD, OUTPUT);
   Serial.begin(9600);
   delay(1000);
-  xTaskCreate(
+  /*xTaskCreate(
                     taskOne,          
                     "Sensor",        
                     10000,              
                     NULL,             
                     1,                
-                    NULL);
+                    NULL);*/
 
                       
 }
@@ -27,9 +28,15 @@ void setup(){
 
 void loop()
 {
-  vTaskDelay(1000);
   
-  motorobject.SETUP();
+  awsobject.connectAWS();
+
+  while(1){
+    awsobject.stayConnected();
+    vTaskDelay(200);
+  }
+
+  /*motorobject.SETUP();
   
   Serial.println("Motor Setup complete!");
   
@@ -44,11 +51,11 @@ void loop()
       motorobject.forward(255);
       }
       vTaskDelay(200);
-    }
+    }*/
 }
 
 
-void taskOne( void * parameter )
+/*void taskOne( void * parameter )
 {
   sensorobject.SETUP();
 
@@ -56,15 +63,15 @@ void taskOne( void * parameter )
 
   while(1){
   a = sensorobject.reading();
-  /*for (int i=0; i<=2 ; i++){
+  for (int i=0; i<=2 ; i++){
     Serial.println(a[i]);
     }
-  Serial.println("------------------------------------");*/
+  Serial.println("------------------------------------");
   
-  vTaskDelay(50); // till next reading 
+  vTaskDelay(50); //till next reading 
   }
   
-}
+}*/
 
 
 

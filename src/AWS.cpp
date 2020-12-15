@@ -22,8 +22,7 @@
   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-//test by Mohamed Yasser (2)
-//test by Ibrahim Ahmed (2)....
+
 
 #include "secrets.h"
 #include <WiFiClientSecure.h>
@@ -34,7 +33,8 @@
 
 /* The MQTT topics that this device should publish/subscribe to */
 #define AWS_IOT_PUBLISH_TOPIC   "esp32/pub" 
-#define AWS_IOT_SUBSCRIBE_TOPIC "esp32/target"
+#define AWS_IOT_SUBSCRIBE_TOPIC_T "esp32/target"
+#define AWS_IOT_SUBSCRIBE_TOPIC_R "esp32/rover"
 
 WiFiClientSecure net = WiFiClientSecure();
 MQTTClient client = MQTTClient(256);
@@ -47,9 +47,9 @@ myawsclass::myawsclass() {
 void messageHandler(String &topic, String &payload) {
   Serial.println("incoming: " + topic + " - " + payload);
 
-//  StaticJsonDocument<200> doc;
-//  deserializeJson(doc, payload);
-//  const char* message = doc["message"];
+  StaticJsonDocument<200> doc;
+  deserializeJson(doc, payload);
+  const char* message = doc["message"];
 }
 
 void myawsclass::stayConnected() {
@@ -68,7 +68,7 @@ void myawsclass::connectAWS() {
     Serial.print("Connecting...!");
   }
 
-  Serial.print("CONNECTED...!\n");
+  Serial.println("CONNECTED...!");
 
   /* Configure WiFiClientSecure to use the AWS IoT device credentials */
   net.setCACert(AWS_CERT_CA);
@@ -81,7 +81,7 @@ void myawsclass::connectAWS() {
   /* Create a message handler */
   client.onMessage(messageHandler);
 
-  Serial.print("Connecting to AWS IOT");
+  Serial.println("Connecting to AWS IOT");
 
   while (!client.connect(THINGNAME)) {
     Serial.print(".");
@@ -95,7 +95,12 @@ void myawsclass::connectAWS() {
   }
 
   /* Subscribe to a topic */
-  client.subscribe(AWS_IOT_SUBSCRIBE_TOPIC);
+  bool target = client.subscribe(AWS_IOT_SUBSCRIBE_TOPIC_T); // checking successful subscriptions
+  bool rover = client.subscribe(AWS_IOT_SUBSCRIBE_TOPIC_R);
+
+  if(target) {Serial.println("Successful Subscription to Topic esp32target");}
+  if(rover) {Serial.println("Successful Subscription to Topic esp32rover");}
+
 
   Serial.println("AWS IoT Connected!");
 }
